@@ -1,0 +1,60 @@
+//////////////////////////////////////////////
+[network ipv4 ipv6]
+nano /etc/network/interfaces
+auto ens192 inet static
+address ....
+netmask 255.255.255.192
+gateway ....
+iface ens192 inet6 static
+address 2001:192:168::1
+netmask 122
+
+nano /etc/sysctl.conf
+  раскоментировать
+  net.ipv4.ip_forwarding=1
+  net.ipv6.conf.all.forwarding=1
+nano /etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+//////////////////////////////////////////////
+[FRR ospf ospf6]
+vtysh
+conf t 
+ip forwarding
+ipv6 forwarding
+router ospf
+network .... 
+maybe router-id .... 
+router ospf6
+int ens192
+ipv6 ospf6 area 0
+do wr
+/////////////////////////////////////////
+[backup script]
+mkdir /backup
+chown Network-admin:Network-admin /backup/
+nano scriptbackup
+    #!/bin/bash
+    BDIR=/backup
+    BDATE=$(date +'%d.%m.%Y_%H.%M')
+    FILENAME-$BDIR/$(hostname)_$BDATE
+
+    find $BDIR -mtime +4 -detele
+    tar -cvf $FILENAME.tar /etc/network/interfaces
+chmod +x scriptbackup
+./scriptbackup
+ls /backup
+    смотрим имя архива
+tar -tf /backup/имя архива/
+    скрин
+////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
