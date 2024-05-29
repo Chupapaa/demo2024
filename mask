@@ -1,4 +1,4 @@
 Mask ipv4
-24 and left 240 right 248
+24 and left right 240 
 Mask ipv6
-64 and left 122 right 122
+64 and left right 124
